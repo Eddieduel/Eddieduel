@@ -1,0 +1,39 @@
+#coding=utf-8
+
+import re
+import urllib
+import requests
+import chardet
+
+
+url ='http://www.heibanke.com/lesson/crawler_ex00/49163'
+url1 = 'http://www.heibanke.com/lesson/crawler_ex00/'
+r = requests.get(url=url)
+html = r.content
+number = re.findall(r'下一个你需要输入的数字是(\d{5,}?)',html)
+test = chardet.detect(number[0])
+numberstr = number[0].decode(encoding='utf-8')
+print number[0]
+
+while True:
+    try:
+        urltest = url1 + str(number[0])
+        r1 = requests.get(url=urltest)
+        htmlfinal = r1.content
+        number = re.findall(r'下一个你需要输入的数字是(\d{5,}?)',htmlfinal)
+        print number
+    except IndexError :
+        print htmlfinal
+        break
+
+
+
+
+
+
+这个是黑板客爬虫闯关的第一关：
+ 首先是通过输入多个数字后得到的线索：我们需要不断的按照提示来输入数字
+ 开始编写爬虫目的是把提示的数字一个一个的都爬出来
+ （在这里遇到一个编码的问题：通过re.findall里取出来的数据并不是一个正确的格式）
+ 最后发现报了一个错误：IndexError 果然不出所料 这串数字shi
+      
